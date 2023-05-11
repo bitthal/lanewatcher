@@ -1,0 +1,399 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBud7RmALDlG7+zDvhJZ+5GDe2QzDJvt5n8SS+xru5az5o5g" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-GLhlTQ8iVG93xBfZlPH94m5bscu3ILjFwFuvkkX/+y7cG0yWR/uAdwFzuP7gDkcj" crossorigin="anonymous"></script>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="generator" content="Hugo 0.111.3">
+    <title>UST-IOT Staging</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+    
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"> -->
+
+    <!-- jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+
+    <!-- Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script> -->
+
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/">
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    
+<!-- <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <style>
+      /* ... header-related styles ... */
+      
+        /* ... header-related styles ... */
+  
+
+  /* Style the table header */
+  thead {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Style the table cells */
+  td {
+    padding: 18px;
+    text-align: center;
+  }
+
+  /* Style the position column */
+  td.position {
+    width: 35%;
+  }
+
+  th {
+    padding: 12px;
+    text-align: center;
+  }
+
+  /* Style the table rows */
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  /* Style the upper and lower values */
+  .upper, .lower {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 7px;
+    border: 1px solid darkblue;
+    margin: 0 5px;
+  }
+
+  .upper {
+    background-color: #d9edf7;
+  }
+
+  .lower {
+    background-color: #fcf8e3;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+      /* Style the flashing effect */
+      @keyframes flash {
+        0% {
+          border-color: rgba(0, 0, 0, 0);
+        }
+        50% {
+          border-color: rgb(0, 132, 255);
+        }
+        100% {
+          border-color: rgba(0, 0, 0, 0);
+        }
+      }
+
+      .flash {
+        animation: flash 0.4s linear;
+        border-width: 1px;
+        border-style: solid;
+      }
+      
+      /* Style the flashing background effect */
+      @keyframes flash-bg {
+        0%, 100% {
+          background-color: transparent;
+        }
+        50% {
+          background-color: rgba(124, 231, 91, 0.692);
+        }
+      }
+
+      .flash-bg {
+        animation: flash-bg 0.4s linear;
+      }
+
+      /* Style the flashing background effect for deleted values */
+      @keyframes flash-bg-delete {
+        0%, 100% {
+          background-color: transparent;
+        }
+        50% {
+          background-color: rgba(255, 0, 0, 0.5);
+        }
+      }
+
+      .flash-bg-delete {
+        animation: flash-bg-delete 0.4s linear;
+      }
+
+      /* headers.css styles */
+      .form-control-dark {
+        border-color: var(--bs-gray);
+      }
+      .form-control-dark:focus {
+        border-color: #fff;
+        box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+      }
+
+      .text-small {
+        font-size: 85%;
+      }
+
+      .dropdown-toggle:not(:focus) {
+        outline: 0;
+      }
+      .fs-6 {
+        font-size: 1.2rem; /* adjust the font size as per your requirement */
+        font-weight: bold;
+      }
+      .nav-pills .nav-link {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      .table > tbody > tr {
+        background-color: #f2f2f2; /* Replace with your desired background color */
+      }
+      
+      .table {
+        width: 100%; /* Decrease the width of the table */
+        margin: 0 auto;
+        border-collapse: collapse;
+      }
+      footer {
+        background-color: #f5f5f5;
+        height: 50px;
+        position: fixed;
+        bottom: 0;
+        width:100%;
+      }
+    </style>
+
+    <!-- Custom styles for this template
+    <link href="headers.css" rel="stylesheet"> -->
+  </head>
+  <body>
+    
+<main>
+  <h1 class="visually-hidden">IOT Lanewatcher</h1>
+
+  <!-- Header-related HTML code -->
+  <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+          <!-- <svg class="bi me-2" width="40" height="32"><img src="{% static 'monotainers_stack/abc-logo.svg' %}" alt="Monotainers Stack" width="40px" height="32px"></svg> -->
+          <span class="fs-2"> <b>UST</b></span>
+          <span class="fs-5"> <b> - IoT Staging</b></span>
+        </a>
+        <ul class="nav nav-pills">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Canada Post Site-1</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item disabled" href="#">Canada Post Site-2</a>
+              <a class="dropdown-item disabled" href="#">Canada Post Site-3</a>
+              <a class="dropdown-item disabled" href="#">Canada Post Site-4</a>
+            </div>
+          </li>
+          <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+          <ul class="nav nav-pills px-2 py-1 me-sm-n4" aria-labelledby="dropdownMenuButton">
+            <li class="mb-2">
+              <div class=" py-1">
+                <a href="{% url 'logout' %}" class="nav-link text-body font-weight-bold px-0">
+                  <i class="fa fa-user me-sm-1"></i>
+                  <span class="d-sm-inline d-none">LOGOUT</span>
+                </a>
+              </div>
+
+            </li>
+
+          </ul>
+        </ul>
+      </header>
+
+    <p id="time"></p>
+
+    <script>
+      // Function to update the time
+      function updateTime() {
+        // Get the current date and time
+        const now = new Date();
+
+        // Format the date and time
+        const options = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          timeZoneName: 'short'
+        };
+        const formattedDate = now.toLocaleDateString('en-US', options);
+        const formattedTime = now.toLocaleTimeString('en-US', options);
+
+        // Set the text content of the <span> element
+        const timeElement = document.getElementById('time');
+        <!-- timeElement.textContent = formattedDate + ', ' + formattedTime; -->
+        timeElement.textContent = formattedDate;
+      }
+
+      // Call the updateTime function every second
+      setInterval(updateTime, 1000);
+    </script>
+  </div>
+
+
+  <!-- Your table-related HTML code -->
+<!-- Your table-related HTML code -->
+<div class="container">
+  <h1 class="my-8">Real-Time Lane Data</h1>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Position</th>
+        {% for position, lane in data.items %}
+          <th>Position {{ position }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="toronto">
+        <td>Toronto</td>
+      </tr>
+      <tr class="hamilton">
+        <td>Hamilton</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  <!-- Footer-related HTML code -->
+  <br><br><br><br><br>
+  <footer class="bottom bg-white">
+    <div class="container text-center">
+      <p class="my-2">Copyright © 2023 UST All Rights Reserved, visit <a href="www.ust.com">www.ust.com</a> to get in touch</p>
+    </div>
+  </footer>
+
+</main>
+
+<!-- JavaScript code related to your table -->
+<!-- JavaScript code related to your table -->
+<script>
+  let lastTableValues = {};
+
+  function populateTable() {
+    fetch('/table/fetch_data/')
+      .then(response => response.json())
+      .then(data => {
+        const lanesByPosition = {};
+
+        data.forEach(row => {
+          const position = row.position;
+          const lane = row.lane;
+          const upper = row.upper === 'NA' ? '' : `<span class="upper">${row.upper}</span>`;
+          const lower = row.lower === 'NA' ? '' : `<span class="lower">${row.lower}</span>`;
+
+          if (!lanesByPosition[position]) {
+            lanesByPosition[position] = {
+              lane1: '',
+              lane2: ''
+            };
+          }
+
+          if (lane === 1) {
+            lanesByPosition[position].lane1 = upper + '<br>' + lower;
+          } else if (lane === 2) {
+            lanesByPosition[position].lane2 = upper + '<br>' + lower;
+          }
+        });
+
+        const tableBody = document.querySelector('table tbody');
+        const torontoRow = tableBody.querySelector('.toronto');
+        const hamiltonRow = tableBody.querySelector('.hamilton');
+
+        torontoRow.innerHTML = '<td>Toronto</td>';
+        hamiltonRow.innerHTML = '<td>Hamilton</td>';
+
+        const positions = Object.keys(lanesByPosition).sort((a, b) => b - a);
+        positions.forEach(position => {
+          const lane = lanesByPosition[position];
+
+          const torontoCell = document.createElement('td');
+          torontoCell.innerHTML = lane.lane1;
+          torontoRow.appendChild(torontoCell);
+
+          const hamiltonCell = document.createElement('td');
+          hamiltonCell.innerHTML = lane.lane2;
+          hamiltonRow.appendChild(hamiltonCell);
+
+          // Check for changes and apply the flash effect
+          if (lastTableValues[position]) {
+            const applyFlash = (element, lastValue, currentValue) => {
+              if (lastValue && !lastValue.includes(currentValue)) {
+                element.classList.add('flash-bg');
+                setTimeout(() => element.classList.remove('flash-bg'), 500);
+              }
+            };
+
+            const lane1Upper = torontoCell.querySelector('.upper');
+            const lane1Lower = torontoCell.querySelector('.lower');
+            const lane2Upper = hamiltonCell.querySelector('.upper');
+            const lane2Lower = hamiltonCell.querySelector('.lower');
+
+            if (lane1Upper) {
+              applyFlash(lane1Upper, lastTableValues[position].lane1, lane1Upper.textContent);
+            }
+            if (lane1Lower) {
+              applyFlash(lane1Lower, lastTableValues[position].lane1, lane1Lower.textContent);
+            }
+            if (lane2Upper) {
+              applyFlash(lane2Upper, lastTableValues[position].lane2, lane2Upper.textContent);
+            }
+            if (lane2Lower) {
+              applyFlash(lane2Lower, lastTableValues[position].lane2, lane2Lower.textContent);
+            }
+          }
+        });
+
+        // Update the lastTableValues variable
+        lastTableValues = lanesByPosition;
+      })
+      .catch(error => console.error(error));
+  }
+
+  function updateTable() {
+    populateTable();
+    setInterval(populateTable, 500);
+  }
+  updateTable();
+</script>
+
+
+<!-- JavaScript code related to the header -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5P3OMp3hU5CB5d5l/n8Di1fZLp/Jr59lPmSc7z8C" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+  </body>
+</html>

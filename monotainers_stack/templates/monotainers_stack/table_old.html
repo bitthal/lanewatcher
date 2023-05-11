@@ -1,0 +1,480 @@
+{% comment %} <!-- monotainers_stack/templates/monotainers_stack/table.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Lane Data</title>
+    <!-- Add CSS styling to make the table elegant -->
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #f9f9f9;
+            margin: 0 auto;
+        }
+        th, td {
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+    <body>
+        <h1>Real-Time Lane Data</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th colspan="2">Lane 1</th>
+                    <th colspan="2">Lane 2</th>
+                </tr>
+                <tr>
+                    <th>Position</th>
+                    <th>Upper</th>
+                    <th>Lower</th>
+                    <th>Upper</th>
+                    <th>Lower</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for position, lane in data.items %}
+                <tr>
+                    <td>Position {{ position }}</td>
+                    <td>{{ lane.lane1.upper }}</td>
+                    <td>{{ lane.lane1.lower }}</td>
+                    <td>{{ lane.lane2.upper }}</td>
+                    <td>{{ lane.lane2.lower }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <script>
+            const tableBody = document.querySelector("tbody");
+            const socket = new WebSocket("ws://" + window.location.host + "/ws/data_update/");
+
+            socket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                tableBody.innerHTML = '';
+
+                for (const row of data) {
+                    const tableRow = document.createElement("tr");
+                    tableRow.innerHTML = `
+                        <td>${row.lane1_upper} / ${row.lane1_lower}</td>
+                        <td>${row.lane2_upper} / ${row.lane2_lower}</td>
+                    `;
+                    tableBody.appendChild(tableRow);
+                }
+            };
+
+            socket.onclose = function(event) {
+                console.error("WebSocket closed:", event);
+            };              
+        </script>
+    </body>
+</html> {% endcomment %}
+
+
+
+<!-- Import Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+
+<!-- Custom CSS styling for the table -->
+<style>
+  /* Style the table header */
+  thead {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+  
+  /* Style the table cells */
+  td {
+    padding: 8px;
+    text-align: center;
+  }
+  
+  /* Style the table rows */
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+</style>
+
+<!-- HTML code for the table using Bootstrap -->
+<div class="container">
+  <h1 class="my-5">Real-Time Lane Data</h1>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="2">Lane 1</th>
+        <th colspan="2">Lane 2</th>
+      </tr>
+      <tr>
+        <th>Position</th>
+        <th>Upper</th>
+        <th>Lower</th>
+        <th>Upper</th>
+        <th>Lower</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for position, lane in data.items %}
+      <tr>
+        <td>Position {{ position }}</td>
+        <td>{{ lane.lane1.upper }}</td>
+        <td>{{ lane.lane1.lower }}</td>
+        <td>{{ lane.lane2.upper }}</td>
+        <td>{{ lane.lane2.lower }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Import Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+{% comment %} 
+<!-- working code  -->
+
+<script>
+  function updateTable() {
+    fetch('/table/get_lane_data/')
+      .then(response => response.json())
+      .then(data => {
+        const tableBody = document.querySelector('tbody');
+        tableBody.innerHTML = '';
+
+        for (const entry of data) {
+          const row = document.createElement('tr');
+
+          const positionCell = document.createElement('td');
+          positionCell.textContent = 'Position ' + entry.position;
+          row.appendChild(positionCell);
+  
+          const lane1UpperCell = document.createElement('td');
+          lane1UpperCell.textContent = entry.lane1_upper;
+          row.appendChild(lane1UpperCell);
+  
+          const lane1LowerCell = document.createElement('td');
+          lane1LowerCell.textContent = entry.lane1_lower;
+          row.appendChild(lane1LowerCell);
+  
+          const lane2UpperCell = document.createElement('td');
+          lane2UpperCell.textContent = entry.lane2_upper;
+          row.appendChild(lane2UpperCell);
+  
+          const lane2LowerCell = document.createElement('td');
+          lane2LowerCell.textContent = entry.lane2_lower;
+          row.appendChild(lane2LowerCell);
+
+          tableBody.appendChild(row);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  // Fetch data and update the table every 5 seconds (5000 milliseconds)
+  setInterval(updateTable, 5000);
+</script>
+
+
+
+ {% endcomment %}
+
+
+
+
+
+{% comment %} 
+<script>
+  const socket = new WebSocket("ws://" + window.location.host + "/ws/data_update/");
+
+  socket.onmessage = function (event) {
+      const data = JSON.parse(event.data);
+      const tableBody = document.querySelector('tbody');
+      tableBody.innerHTML = '';
+
+      for (const entry of data) {
+        const row = document.createElement('tr');
+
+        const positionCell = document.createElement('td');
+        positionCell.textContent = 'Position ' + entry.position;
+        row.appendChild(positionCell);
+
+        const lane1UpperCell = document.createElement('td');
+        lane1UpperCell.textContent = entry.lane1_upper;
+        row.appendChild(lane1UpperCell);
+
+        const lane1LowerCell = document.createElement('td');
+        lane1LowerCell.textContent = entry.lane1_lower;
+        row.appendChild(lane1LowerCell);
+
+        const lane2UpperCell = document.createElement('td');
+        lane2UpperCell.textContent = entry.lane2_upper;
+        row.appendChild(lane2UpperCell);
+
+        const lane2LowerCell = document.createElement('td');
+        lane2LowerCell.textContent = entry.lane2_lower;
+        row.appendChild(lane2LowerCell);
+
+        tableBody.appendChild(row);
+      }
+    };
+
+  socket.onclose = function (event) {
+      console.error('WebSocket closed unexpectedly');
+    }; 
+</script>
+
+   {% endcomment %}
+
+
+
+
+{% comment %} 
+
+   <script>
+    function updateTable() {
+      fetch('/table/get_lane_data/')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.querySelector('tbody');
+          tableBody.innerHTML = '';
+    
+          for (const entry of JSON.parse(data)) {
+            const row = document.createElement('tr');
+    
+            const positionCell = document.createElement('td');
+            positionCell.textContent = 'Position ' + entry.fields.position;
+            row.appendChild(positionCell);
+    
+            const lane1UpperCell = document.createElement('td');
+            lane1UpperCell.textContent = entry.fields.lane1_upper;
+            row.appendChild(lane1UpperCell);
+    
+            const lane1LowerCell = document.createElement('td');
+            lane1LowerCell.textContent = entry.fields.lane1_lower;
+            row.appendChild(lane1LowerCell);
+    
+            const lane2UpperCell = document.createElement('td');
+            lane2UpperCell.textContent = entry.fields.lane2_upper;
+            row.appendChild(lane2UpperCell);
+    
+            const lane2LowerCell = document.createElement('td');
+            lane2LowerCell.textContent = entry.fields.lane2_lower;
+            row.appendChild(lane2LowerCell);
+    
+            tableBody.appendChild(row);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }   
+    setInterval(updateTable, 2000); 
+   </script>
+ {% endcomment %}
+
+
+
+
+
+
+
+
+{% comment %} 
+
+
+
+  <script>
+    function populateTable() {
+      fetch('/table/fetch_data/')
+        .then(response => response.json())
+        .then(data => {
+          // Create object to store rows for each position
+          const rowsByPosition = {};
+    
+          // Loop through data and add rows to object
+          data.forEach(row => {
+            const position = row.position;
+            const lane = row.lane;
+            const upper = row.upper === 'NA' ? '' : row.upper;
+            const lower = row.lower === 'NA' ? '' : row.lower;
+    
+            // Create new row for position if it doesn't exist
+            if (!rowsByPosition[position]) {
+              rowsByPosition[position] = {
+                lane1Upper: '',
+                lane1Lower: '',
+                lane2Upper: '',
+                lane2Lower: ''
+              };
+            }
+    
+            // Fill in data for the appropriate lane and column
+            if (lane === 1) {
+              rowsByPosition[position].lane1Upper = upper;
+              rowsByPosition[position].lane1Lower = lower;
+            } else if (lane === 2) {
+              rowsByPosition[position].lane2Upper = upper;
+              rowsByPosition[position].lane2Lower = lower;
+            }
+          });
+    
+          // Clear table body
+          const tableBody = document.querySelector('table tbody');
+          tableBody.innerHTML = '';
+    
+          // Loop through rows by position and add rows to table
+          Object.keys(rowsByPosition).forEach(position => {
+            const row = rowsByPosition[position];
+    
+            // Create new row
+            const newRow = document.createElement('tr');
+    
+            // Add position column
+            const positionCell = document.createElement('td');
+            positionCell.innerText = `Position ${position}`;
+            newRow.appendChild(positionCell);
+    
+            // Add lane 1 upper column
+            const lane1UpperCell = document.createElement('td');
+            lane1UpperCell.innerText = row.lane1Upper;
+            newRow.appendChild(lane1UpperCell);
+    
+            // Add lane 1 lower column
+            const lane1LowerCell = document.createElement('td');
+            lane1LowerCell.innerText = row.lane1Lower;
+            newRow.appendChild(lane1LowerCell);
+    
+            // Add lane 2 upper column
+            const lane2UpperCell = document.createElement('td');
+            lane2UpperCell.innerText = row.lane2Upper;
+            newRow.appendChild(lane2UpperCell);
+    
+            // Add lane 2 lower column
+            const lane2LowerCell = document.createElement('td');
+            lane2LowerCell.innerText = row.lane2Lower;
+            newRow.appendChild(lane2LowerCell);
+    
+            // Add row to table body
+            tableBody.appendChild(newRow);
+          });
+        })
+        .catch(error => console.error(error));
+    }
+  
+  // Call updateTable every 5 seconds
+  function updateTable() {
+    populateTable();
+    setInterval(populateTable, 3000);
+  }
+  updateTable()
+</script> {% endcomment %}
+
+
+
+
+<script>
+  function populateTable() {
+    fetch('/table/fetch_data/')
+      .then(response => response.json())
+      .then(data => {
+        // Create object to store rows for each position
+        const rowsByPosition = {};
+  
+        // Loop through data and add rows to object
+        data.forEach(row => {
+          const position = row.position;
+          const lane = row.lane;
+          const upper = row.upper === 'NA' ? '' : row.upper;
+          const lower = row.lower === 'NA' ? '' : row.lower;
+  
+          // Create new row for position if it doesn't exist
+          if (!rowsByPosition[position]) {
+            rowsByPosition[position] = {
+              lane1Upper: '',
+              lane1Lower: '',
+              lane2Upper: '',
+              lane2Lower: ''
+            };
+          }
+  
+          // Fill in data for the appropriate lane and column
+          if (lane === 1) {
+            rowsByPosition[position].lane1Upper = upper;
+            rowsByPosition[position].lane1Lower = lower;
+          } else if (lane === 2) {
+            rowsByPosition[position].lane2Upper = upper;
+            rowsByPosition[position].lane2Lower = lower;
+          }
+        });
+  
+        // Clear table body
+        const tableBody = document.querySelector('table tbody');
+        tableBody.innerHTML = '';
+  
+        // Loop through rows by position and add rows to table
+        const positions = Object.keys(rowsByPosition).sort((a, b) => b - a);
+        positions.forEach(position => {
+          const row = rowsByPosition[position];
+  
+          // Create new row
+          const newRow = document.createElement('tr');
+  
+          // Add position column
+          const positionCell = document.createElement('td');
+          positionCell.innerText = `Position ${position}`;
+          newRow.appendChild(positionCell);
+  
+          // Add lane 1 upper column
+          const lane1UpperCell = document.createElement('td');
+          lane1UpperCell.innerText = row.lane1Upper;
+          newRow.appendChild(lane1UpperCell);
+  
+          // Add lane 1 lower column
+          const lane1LowerCell = document.createElement('td');
+          lane1LowerCell.innerText = row.lane1Lower;
+          newRow.appendChild(lane1LowerCell);
+  
+          // Add lane 2 upper column
+          const lane2UpperCell = document.createElement('td');
+          lane2UpperCell.innerText = row.lane2Upper;
+          newRow.appendChild(lane2UpperCell);
+  
+          // Add lane 2 lower column
+          const lane2LowerCell = document.createElement('td');
+          lane2LowerCell.innerText = row.lane2Lower;
+          newRow.appendChild(lane2LowerCell);
+  
+          // Add row to table body
+          tableBody.appendChild(newRow);
+        });
+      })
+      .catch(error => console.error(error));
+  }
+
+// Call updateTable every 5 seconds
+function updateTable() {
+  populateTable();
+  setInterval(populateTable, 1000);
+}
+updateTable()
+</script>

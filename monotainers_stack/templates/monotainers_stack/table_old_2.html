@@ -1,0 +1,196 @@
+<!-- Import Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<!-- Custom CSS styling for the table -->
+<style>
+  /* Style the table header */
+  thead {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Style the table cells */
+  td {
+    padding: 8px;
+    text-align: center;
+  }
+
+  /* Style the table rows */
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  /* Style the upper and lower values */
+  .upper {
+    background-color: #d9edf7;
+    display: inline-block;
+    width: 100%;
+    padding: 2px;
+    border-radius: 4px;
+  }
+
+  .lower {
+    background-color: #fcf8e3;
+    display: inline-block;
+    width: 100%;
+    padding: 2px;
+    border-radius: 4px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  /* Style the flashing background effect */
+  @keyframes flash-bg {
+    0%, 100% {
+      background-color: transparent;
+    }
+    50% {
+      background-color: rgba(124, 231, 91, 0.6);
+    }
+  }
+
+  .flash-bg {
+    animation: flash-bg 0.4s linear;
+  }
+
+  /* Style the flashing background effect for deletion */
+  @keyframes flash-bg-delete {
+    0%, 100% {
+      background-color: transparent;
+    }
+    50% {
+      background-color: rgba(255, 0, 0, 0.6);
+    }
+  }
+
+  .flash-bg-delete {
+    animation: flash-bg-delete 0.4s linear;
+  }
+</style>
+
+<!-- HTML code for the table using Bootstrap -->
+<div class="container">
+  <h1 class="my-5">Real-Time Lane Data</h1>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Lane 1</th>
+        <th>Lane 2</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for position, lane in data.items %}
+      <tr>
+        <td>Position {{ position }}</td>
+        <td><span class="upper">{{ lane.lane1.upper }}</span><br><span class="lower">{{ lane.lane1.lower }}</span></td>
+        <td><span class="upper">{{ lane.lane2.upper }}</span><br><span class="lower">{{ lane.lane2.lower }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Import Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+  let lastTableValues = {};
+
+  function populateTable() {
+    fetch('/table/fetch_data/')
+      .then(response => response.json())
+      .then(data => {
+        const rowsByPosition = {};
+
+        data.forEach(row => {
+          const position = row.position;
+          const lane = row.lane;
+          const upper = row.upper === 'NA' ? '' : `<span class="upper">${row.upper}</span>`;
+          const lower = row.lower === 'NA' ? '' : `<span class="lower">${row.lower}</span>`;
+
+          if (!rowsByPosition[position]) {
+            rowsByPosition[position] = {
+              lane1: '',
+              lane2: ''
+            };
+          }
+
+          if (lane === 1) {
+            rowsByPosition[position].lane1 = upper + '<br>' + lower;
+          } else if (lane === 2) {
+            rowsByPosition[position].lane2 = upper + '<br>' + lower;
+          }
+        });
+
+        const tableBody = document.querySelector('table tbody');
+        tableBody.innerHTML = '';
+
+        const positions = Object.keys(rowsByPosition).sort((a, b) => b - a);
+        positions.forEach(position => {
+          const row = rowsByPosition[position];
+
+          const newRow = document.createElement('tr');
+
+          const positionCell = document.createElement('td');
+          positionCell.innerText = `Position ${position}`;
+          newRow.appendChild(positionCell);
+
+          const lane1Cell = document.createElement('td');
+          lane1Cell.innerHTML = row.lane1;
+          newRow.appendChild(lane1Cell);
+
+          const lane2Cell = document.createElement('td');
+          lane2Cell.innerHTML = row.lane2;
+          newRow.appendChild(lane2Cell);
+
+          // Check for changes and apply the flash effect
+          if (lastTableValues[position]) {
+            const lane1Upper = lane1Cell.querySelector('.upper');
+            const lane1Lower = lane1Cell.querySelector('.lower');
+            const lane2Upper = lane2Cell.querySelector('.upper');
+            const lane2Lower = lane2Cell.querySelector('.lower');
+
+            const applyFlash = (element, lastValue, currentValue) => {
+              if (lastValue && !lastValue.includes(currentValue)) {
+                element.classList.add('flash-bg');
+                setTimeout(() => element.classList.remove('flash-bg'), 400);
+              } else if (lastValue && currentValue === '') {
+                element.classList.add('flash-bg-delete');
+                setTimeout(() => element.classList.remove('flash-bg-delete'), 400);
+              }
+            };
+
+            if (lane1Upper) {
+              applyFlash(lane1Upper, lastTableValues[position].lane1, lane1Upper.textContent);
+            }
+            if (lane1Lower) {
+              applyFlash(lane1Lower, lastTableValues[position].lane1, lane1Lower.textContent);
+            }
+            if (lane2Upper) {
+              applyFlash(lane2Upper, lastTableValues[position].lane2, lane2Upper.textContent);
+            }
+            if (lane2Lower) {
+              applyFlash(lane2Lower, lastTableValues[position].lane2, lane2Lower.textContent);
+            }
+          }
+
+          tableBody.appendChild(newRow);
+        });
+
+        // Update the lastTableValues variable
+        lastTableValues = rowsByPosition;
+      })
+      .catch(error => console.error(error));
+  }
+
+  function updateTable() {
+    populateTable();
+    setInterval(populateTable, 400);
+  }
+  updateTable();
+</script>
