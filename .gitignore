@@ -1,7 +1,10 @@
-venv
-venv/
-/venv
+
 # Created by https://www.gitignore.io
+
+### Jetbrains ###
+venv
+.idea
+.vscode
 
 ### OSX ###
 .DS_Store
