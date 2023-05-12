@@ -36,5 +36,3 @@ if __name__ == "__main__":
 
     file_path = "txts/Toronto-112658-112741_AdobeExpress_full_.txt"
     read_file_and_send_data(file_path)
-    
-    
