@@ -1,8 +1,3 @@
-# django superuser details
-username = admin
-email = test@test.com
-password = admin
-
 # git
     git remote add origin https://github.com/username/repository.git
     git push -u origin master
