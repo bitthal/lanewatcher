@@ -30,19 +30,19 @@ sudo nano /etc/systemd/system/lanewatcher.service
 # Step 2: Edit the systemd Service File
 In the file, enter the following:
 
-[Unit]
-Description=Gunicorn instance to serve lanewatcher
-After=network.target
+    [Unit]
+    Description=Gunicorn instance to serve lanewatcher
+    After=network.target
 
-[Service]
-User=root
-Group=www-data
-WorkingDirectory=/var/www/lanewatcher
-Environment="PATH=/var/www/lanewatcher/venv/bin"
-ExecStart=/var/www/lanewatcher/venv/bin/gunicorn lanewatcher.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    [Service]
+    User=root
+    Group=www-data
+    WorkingDirectory=/var/www/lanewatcher
+    Environment="PATH=/var/www/lanewatcher/venv/bin"
+    ExecStart=/var/www/lanewatcher/venv/bin/gunicorn lanewatcher.wsgi:application --bind 0.0.0.0:8000 --workers 3
 
-[Install]
-WantedBy=multi-user.target
+    [Install]
+    WantedBy=multi-user.target
 
 
 Replace yourusername with your actual username. This will be the user that runs the Gunicorn service.
