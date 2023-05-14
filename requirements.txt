@@ -12,3 +12,4 @@ djangorestframework
 requests
 django-allauth
 gunicorn
+whitenoise
