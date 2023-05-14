@@ -186,6 +186,53 @@
         bottom: 0;
         width:100%;
       }
+
+
+
+
+
+
+
+      .container {
+        display: flex;
+        justify-content: space-around; /* This will add equal space between the sections */
+        flex-wrap: wrap; /* This will allow the items to wrap onto new lines if the viewport is too narrow */
+      }
+      
+      .section {
+        flex: 1; /* This will make each section take up an equal amount of space */
+        margin: 10px; /* Adds some space around each section */
+        padding: 20px; /* Adds some space within each section */
+        box-sizing: border-box; /* This ensures that the padding and margin do not increase the width of the sections beyond 100% of the container's width */
+        border: 1px solid #000; /* Adds a border around each section */
+      }
+      
+      .box-container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      
+      .box-container div {
+        /* You can add styles for your boxes here */
+        margin: 5px;
+        padding: 10px;
+        border: 1px solid #000;
+      }
+      .data-btn {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+
+
+      
     </style>
 
     <!-- Custom styles for this template
@@ -237,7 +284,7 @@
       function updateTime() {
         // Get the current date and time
         const now = new Date();
-
+    
         // Format the date and time
         const options = {
           weekday: 'long',
@@ -251,41 +298,98 @@
         };
         const formattedDate = now.toLocaleDateString('en-US', options);
         const formattedTime = now.toLocaleTimeString('en-US', options);
-
+    
         // Set the text content of the <span> element
         const timeElement = document.getElementById('time');
-        <!-- timeElement.textContent = formattedDate + ', ' + formattedTime; -->
         timeElement.textContent = formattedDate;
       }
-
+    
       // Call the updateTime function every second
       setInterval(updateTime, 1000);
+    
+      // Elements for planogram view data
+      const inStaged = document.getElementById('inStaged');
+      const mapped = document.getElementById('mapped');
+      const missing = document.getElementById('missing');
+      const total = document.getElementById('total');
+    
+      // Elements for pending and processed boxes
+      const pendingBoxes = document.getElementById('pending-boxes');
+      const processedBoxes = document.getElementById('processed-boxes');
+    
+      // Populate with data (you need to replace this part with actual data fetching)
+      inStaged.textContent = '10'; // number of items in staged
+      mapped.textContent = '15'; // number of items mapped
+      missing.textContent = '5'; // number of items missing
+      total.textContent = '30'; // total number of items
+    
+      // Add boxes to pending section
+      for (let i = 0; i < 10; i++) { // replace with actual number of pending boxes
+        const div = document.createElement('div');
+        div.textContent = `Box ${i + 1}`;
+        pendingBoxes.appendChild(div);
+      }
+    
+      // Add boxes to processed section
+      for (let i = 0; i < 20; i++) { // replace with actual number of processed boxes
+        const div = document.createElement('div');
+        div.textContent = `Box ${i + 1}`;
+        processedBoxes.appendChild(div);
+      }
     </script>
+    
   </div>
 
 
   <!-- Your table-related HTML code -->
 <!-- Your table-related HTML code -->
 <div class="container">
-  <h1 class="my-8">Real-Time Lane Data</h1>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Position</th>
-        {% for position, lane in data.items %}
-          <th>Position {{ position }}</th>
-        {% endfor %}
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="toronto">
-        <td>Toronto</td>
-      </tr>
-      <tr class="hamilton">
-        <td>Hamilton</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Planogram view section -->
+  <div class="section">
+    <h2>Planogram view</h2>
+    <p>In Staged: <button class="data-btn" id="inStaged">0</button></p>
+    <p>Mapped: <button class="data-btn" id="mapped">0</button></p>
+    <p>Missing: <button class="data-btn" id="missing">0</button></p>
+    <p>Total: <button class="data-btn" id="total">0</button></p>
+  </div>
+  <!-- Pending section -->
+  <div class="section" id="pending">
+    <h2>Pending</h2>
+    <div class="box-container" id="pending-boxes">
+      <!-- Boxes with monotainer ids will be added dynamically here -->
+    </div>
+  </div>
+
+  <div class="section" id="real-time-lane-data">
+    <h2 class="my-8">Real-Time Lane Data</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Position</th>
+          {% for position, lane in data.items %}
+            <th>Position {{ position }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="toronto">
+          <td>Toronto</td>
+        </tr>
+        <tr class="hamilton">
+          <td>Hamilton</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Processed section -->
+  <div class="section" id="processed">
+    <h2>Processed</h2>
+    <div class="box-container" id="processed-boxes">
+      <!-- Boxes with different values will be added dynamically here -->
+    </div>
+  </div>
+
 </div>
 
   <!-- Footer-related HTML code -->
