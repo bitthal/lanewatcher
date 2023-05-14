@@ -4,19 +4,21 @@ email = test@test.com
 password = admin
 
 # git
-git remote add origin https://github.com/username/repository.git
-git push -u origin master
-git rm -r --cached .
-git add .
-git commit -m "updates"
-git push origin master
+    git remote add origin https://github.com/username/repository.git
+    git push -u origin master
+    git rm -r --cached .
+    git add .
+    git commit -m "updates"
+    git push origin master
 
+# pip
+    pip install -r requirements.txt
 
 # To check gunicorn processes
-ps ax|grep gunicorn
+    ps ax|grep gunicorn
 
 # To kill all gunicorn processes
-pkill gunicorn
+    pkill gunicorn
 
 ## Gunicorn setup 
 
