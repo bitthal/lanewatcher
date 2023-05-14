@@ -20,6 +20,8 @@ password = admin
 # To kill all gunicorn processes
     pkill gunicorn
 
+
+
 ## Gunicorn setup 
 
 # Setting up Gunicorn as a systemd Service

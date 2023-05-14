@@ -11,3 +11,4 @@ tzdata==2023.3
 djangorestframework
 requests
 django-allauth
+gunicorn
