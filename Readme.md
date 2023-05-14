@@ -24,8 +24,7 @@ pkill gunicorn
 Step 1: Create a systemd Service File
 Create a systemd service file for your Gunicorn application:
 
-
-sudo nano /etc/systemd/system/lanewatcher.service
+    sudo nano /etc/systemd/system/lanewatcher.service
 
 # Step 2: Edit the systemd Service File
 In the file, enter the following:
@@ -51,23 +50,21 @@ Save and close the file.
 # Step 3: Start and Enable the Gunicorn Service
 Now you can start the Gunicorn service and enable it to start on boot:
 
-
-sudo systemctl start lanewatcher
-sudo systemctl enable lanewatcher
+    sudo systemctl start lanewatcher
+    sudo systemctl enable lanewatcher
 
 # Step 4: Checking the Status of Your Service
 You can check the status of your service at any time with the following command:
 
-
-sudo systemctl status lanewatcher
+    sudo systemctl status lanewatcher
 
 # Managing the Gunicorn Service
 To stop the service, you can use the following command:
 
+    sudo systemctl stop lanewatcher
 
-sudo systemctl stop lanewatcher
 And to restart the service, you can use the following command:
 
+    sudo systemctl restart lanewatcher
 
-sudo systemctl restart lanewatcher
 With this setup, your Gunicorn service will start automatically when your system boots, and you can easily start, stop, and restart it manually when needed.
