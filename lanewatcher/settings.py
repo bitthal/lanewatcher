@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'monotainers_stack',
     'channels',
     'rest_framework',
-    'authentication'
+    'authentication',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -52,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     # 'channels.middleware.AsgiHandler'
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -141,3 +144,32 @@ STATIC_ROOT = '/var/www/lanewatcher/lanewatcher/monotainers_stack/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/django.log'),
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'DEBUG',
+    },
+}
+
+CORS_ALLOWED_ORIGINS = [
+    "http://64.226.75.48",
+    "http://64.226.75.48:8000",
+    "http://localhost:3000/",
+    "https://lanewatcher.vercel.app/",
+    "https://lanewatcher.vercel.app/dashboard",
+    "http://165.22.185.99/",
+    "http://165.22.185.99:8000",
+    "http://165.22.185.99/dashboard",
+    "http://165.22.185.99",
+    "http://64.226.75.48:8000"
+]

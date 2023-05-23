@@ -13,8 +13,8 @@ logging.basicConfig(filename=log_filename, level=logging.DEBUG, format='%(asctim
 
 logger = logging.getLogger(__name__)
 
-API_FLUSH_ENDPOINT = "http://46.101.170.185/api/flush_stack_memory/"
-API_LOAD_DATA_ENDPOINT = "http://46.101.170.185/table/api/load_data/"
+API_FLUSH_ENDPOINT = "http://46.101.170.185/api/flush_stack_memory2/"
+API_LOAD_DATA_ENDPOINT = "http://46.101.170.185/table/api/load_data2/"
 
 
 def flush_database():
@@ -30,7 +30,9 @@ def flush_database():
 
 def read_file_and_send_data(file_path):
     with open(file_path, 'r') as file:
-        for line in file:
+        for i, line in enumerate(file):
+            if i >= 10000:  # stop reading after 20 lines
+                break
             payload = line.split(' ')
             if payload:
                 try:
@@ -38,14 +40,14 @@ def read_file_and_send_data(file_path):
                     response.raise_for_status()
 
                     try:
-                        data = response.json()['Message']
+                        data = response.json()
                         logger.info("%s\n", data)
                     except KeyError as e:
                         logger.exception("KeyError occurred while parsing the response")
                 except requests.exceptions.RequestException as e:
                     logger.exception("An error occurred while sending data to the API")
                     break
-            break # remove it to run for all lines
+            time.sleep(0.25)
 
 
 if __name__ == "__main__":
